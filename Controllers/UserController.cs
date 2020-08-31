@@ -28,11 +28,10 @@ namespace ToDoList_08272020.Controllers
             return View(tasklist);
 
         }
-        public IActionResult FilterView(List<ToDoList> searchList)
-        {
-            return View("../User/Index",searchList);
-        }
 
+
+
+        #region Add Task
         [HttpGet]//This action is for displaying the data in the database for the user
         public IActionResult AddTask()
         {
@@ -55,8 +54,9 @@ namespace ToDoList_08272020.Controllers
             //View should update with the modifications of the added task
             return RedirectToAction("Index");
         }
+        #endregion
 
-
+        #region Delete Task
         //This prompts the user to confirm their deletion. if the yes button is clicked then the task will be deleted.
         //if no is pressed, User will be returned to the main menu
         public IActionResult ConfirmDeleteTask(int id)
@@ -84,6 +84,35 @@ namespace ToDoList_08272020.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Change Completion Status
+        //This action changes the completion status of the selected task to complete
+        public IActionResult UpdateTask(int id)
+        {
+                ToDoList task = _context.ToDoList.Find(id);
+                if (task == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+
+                    task.Completed = true;
+                    
+                    _context.Entry(task).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.Update(task);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+            
+        }
+
+
+        #endregion
+
+        #region SearchFunctions
         //This action takes in a bool (check box checked = true, not checked is false)
         public IActionResult SearchCompletion(bool status)
         {
@@ -99,7 +128,7 @@ namespace ToDoList_08272020.Controllers
 
                 //Do the nature of "bit" in SQL some falses are showing up as null, so the elseif here will catch null
 
-                else if (task.Completed == null && status==false)
+                else if ((task.Completed == null || task.Completed==false) && status==false)
                 {
                     searchList.Add(task);
                 }
@@ -124,5 +153,20 @@ namespace ToDoList_08272020.Controllers
 
             return View("../User/Index", searchList);
         }
+
+        //resets table to default
+        public IActionResult Reset()
+        {
+            return RedirectToAction("Index");
+        }
+
+        //This returns a table view filtered by user input
+        public IActionResult FilterView(List<ToDoList> searchList)
+        {
+            return View("../User/Index", searchList);
+        }
+        #endregion
+
+
     }
 }

@@ -34,10 +34,6 @@ namespace ToDoList_08272020.Controllers
             }
                 return View();
         }
-        public IActionResult DisplayUser()
-        {
-            return Redirect("../User/Index");
-        }
 
 
         #region Cache

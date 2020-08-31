@@ -6,50 +6,58 @@
 
 @model List<ToDoList>
 
-<table class="table table-bordered shadow table-hover table-info">
-    <tr class="d-table-row">
-        <th>Task</th>
-        <th>Description</th>
-        <th>Due Date</th>
-        <th>Completion Status</th>
-    </tr>
-    
-    @foreach (ToDoList task in Model)
-    {
-    
-        <tr>
-            <td>@task.Assignment</td>
-            <td>@task.AssignmentDescription</td>
-            <td>@task.DueDate</td>
 
-            @if (task.Completed == true)
-            {
-                <td>Task is completed</td>
-                <td class="btn-success">
-                    <a href="../User/UpdateTask?id=@task.Id">Mark Complete</a>
-                </td>
-            }
-            else
-            {
-                <td>Task is not Complete</td>
-                <td class="btn-danger">
-                    <a href="../User/UpdateTask?id=@task.Id">Mark Incomplete</a>
-                </td>
-            }
-
-
-            <td class="btn-danger">
-                <a href="../User/ConfirmDeleteTask?id=@task.Id">Delete Task</a>
-            </td>
-
-
+    <table class="table table-bordered shadow table-hover table-info">
+        <tr class="d-table-row">
+            <th>Task</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Completion Status</th>
         </tr>
-    }
-</table>
 
 
 
-<a href="../User/AddTask" class="btn-primary">Add a new task!</a>
+
+        @foreach (ToDoList task in Model)
+        {
+
+            <tr>
+                <td>@task.Assignment</td>
+                <td>@task.AssignmentDescription</td>
+                <td>@task.DueDate</td>
+
+                @if (task.Completed == true)
+                {
+                    <td>Task is complete!</td>
+                }
+                else
+                {
+                    <td>Task is not complete</td>
+                    <td class="btn-success">
+                        <a href="../User/UpdateTask?id=@task.Id">Mark Complete</a>
+                    </td>
+                }
+
+
+                <td class="btn-danger">
+                    <a href="../User/ConfirmDeleteTask?id=@task.Id">Delete Task</a>
+                </td>
+
+
+            </tr>
+        }
+
+        @if (Model.Count == 0)
+        {
+            <tr>
+                <td class="text-center">There currently are no tasks</td>
+            </tr>
+        }
+
+    </table>
+
+
+<a href="../User/AddTask" class="btn-dark">Add a new task!</a>
 
 
 <br />
@@ -63,3 +71,4 @@
     Due Before: <input type="date" name="status" value="true" />
     <input type="submit" value="filter" />
 </form>
+<a href="../User/Reset" class="btn-dark">Reset Search Functions</a>
