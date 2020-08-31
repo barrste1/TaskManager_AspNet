@@ -1,0 +1,40 @@
+﻿
+
+@model ToDoList
+
+    <table class="table table-bordered shadow table-hover table-info">
+        <tr class="d-table-row">
+            <th>Task</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Completion Status</th>
+        </tr>
+
+            <tr>
+                <td>@Model.Assignment</td>
+                <td>@Model.AssignmentDescription</td>
+                <td>@Model.DueDate</td>
+
+                @if (Model.Completed == true)
+                {
+                    <td>Task is completed</td>
+
+                }
+                else
+                {
+                    <td>Task is not Complete</td>
+                }
+
+            </tr>
+        
+
+    </table>
+    
+<form action="../User/DeleteTask" method="post">
+    <p>Are you sure you wish to delete this task?</p>
+    <input name="id" value="@Model.Id" hidden />
+    <input type="submit" name="delete" value="Yes" />
+    <input type="submit" name="delete" value="No" />
+
+</form>
+
