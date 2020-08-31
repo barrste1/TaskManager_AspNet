@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ToDoList_08272020.Models;
 
 namespace ToDoList_08272020.Controllers
@@ -20,15 +21,35 @@ namespace ToDoList_08272020.Controllers
         }
 
 
-        public IActionResult Index()
+        //The index displays the main menu of tasks based on user. The sortOrder string is determined by a hyperlink
+        //in the table, allowing a user to sort results by either duedate or completion status. This is accomplished
+        //via the url that is sent back to the index from the view.
+        public async Task<IActionResult> Index(string sortOrder)
         {
+            //Parameters that sorts are based on
+            ViewData["CompleteParm"] = String.IsNullOrEmpty(sortOrder) ? "complete_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var tasklist = _context.ToDoList.Where(x => x.UserId == id).ToList();
+            var tasks = _context.ToDoList.Where(x => x.UserId == id).ToList();
 
-            return View(tasklist);
-
+            switch (sortOrder)
+            {
+                case "complete_desc":
+                    tasks = tasks.OrderByDescending(t => t.Completed).ToList();
+                    break;
+                case "Date":
+                    tasks = tasks.OrderBy(t => t.DueDate).ToList();
+                    break;
+                case "date_desc":
+                    tasks = tasks.OrderByDescending(t => t.DueDate).ToList();
+                    break;
+                default:
+                    tasks = tasks.OrderBy(t => t.Completed).ToList();
+                    break;
+            }
+            return View(tasks);
         }
-
 
 
         #region Add Task
@@ -126,7 +147,7 @@ namespace ToDoList_08272020.Controllers
                     searchList.Add(task);
                 }
 
-                //Do the nature of "bit" in SQL some falses are showing up as null, so the elseif here will catch null
+                //Due the nature of "bit" in SQL some falses are showing up as null, so the elseif here will catch null
 
                 else if ((task.Completed == null || task.Completed==false) && status==false)
                 {
@@ -134,7 +155,7 @@ namespace ToDoList_08272020.Controllers
                 }
             }
 
-            return View("../User/Index",searchList);
+            return View("../User/Filter",searchList);
         }
 
         //this compares the date of input to the dates of tasks. if they are a match, a new list is constructed and sent to view
@@ -151,7 +172,7 @@ namespace ToDoList_08272020.Controllers
                 }
             }
 
-            return View("../User/Index", searchList);
+            return View("../User/Filter", searchList);
         }
 
         //resets table to default
@@ -161,9 +182,9 @@ namespace ToDoList_08272020.Controllers
         }
 
         //This returns a table view filtered by user input
-        public IActionResult FilterView(List<ToDoList> searchList)
+        public IActionResult Filter(List<ToDoList> tasks)
         {
-            return View("../User/Index", searchList);
+            return View("../User/Filter", tasks);
         }
         #endregion
 

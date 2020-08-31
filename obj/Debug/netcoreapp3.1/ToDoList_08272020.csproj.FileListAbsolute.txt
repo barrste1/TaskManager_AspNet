@@ -190,3 +190,4 @@ C:\Users\Stephen Barr (Work)\source\repos\ToDoList_08272020\obj\Debug\netcoreapp
 C:\Users\Stephen Barr (Work)\source\repos\ToDoList_08272020\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\Stephen Barr (Work)\source\repos\ToDoList_08272020\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 C:\Users\Stephen Barr (Work)\source\repos\ToDoList_08272020\obj\Debug\netcoreapp3.1\Razor\Views\User\ConfirmDeleteTask.cshtml.g.cs
+C:\Users\Stephen Barr (Work)\source\repos\ToDoList_08272020\obj\Debug\netcoreapp3.1\Razor\Views\User\Filter.cshtml.g.cs
